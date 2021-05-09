@@ -35,8 +35,8 @@ public class Bot extends TelegramLongPollingBot {
             String country = Area.getCountry(longitude, latitude);
             sendMsg("Вы находитесь в городе " + city +
                     "\nПогода в городе " + city + " равна " + Weather.getTemperatureCelsium(city) + "℃" +
-                    "\nКоличество заболевших в стране " + "NONE" + " за сегодня " + "NONE" +
-                    "\nВалюта: ", chat_id);
+                    "\nКоличество заболевших в стране " + "NONE" + " за сегодня " + "NONE" + " человек" +
+                    "\nВалюта: " + "NONE", chat_id);
         }
         if (message != null) {
 
