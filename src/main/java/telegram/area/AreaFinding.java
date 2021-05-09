@@ -3,9 +3,6 @@ package telegram.area;
 import lombok.SneakyThrows;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import telegram.ReadProperties;
 
 import java.io.BufferedReader;

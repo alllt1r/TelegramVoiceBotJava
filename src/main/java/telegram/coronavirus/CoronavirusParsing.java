@@ -4,9 +4,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import telegram.ReadProperties;
 
 import javax.swing.text.Document;
