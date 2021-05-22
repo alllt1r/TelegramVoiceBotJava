@@ -1,0 +1,8 @@
+telegram\area\AreaFinding.class
+telegram\Main.class
+telegram\coinbase\BankParsing.class
+telegram\coronavirus\CoronavirusParsing.class
+telegram\Bot.class
+telegram\buttons\Reply.class
+telegram\ReadProperties.class
+telegram\weather\WeatherParsing.class

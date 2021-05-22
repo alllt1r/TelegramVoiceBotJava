@@ -32,11 +32,11 @@ public class Bot extends TelegramLongPollingBot {
             String longitude = update.getMessage().getLocation().getLongitude().toString();
             String latitude = update.getMessage().getLocation().getLatitude().toString();
             String city = Area.getCity(longitude, latitude);
-            String country = Area.getCountry(longitude, latitude);
+            String country = Area.getCountry(city);
+
             sendMsg("Вы находитесь в городе " + city +
                     "\nПогода в городе " + city + " равна " + Weather.getTemperatureCelsium(city) + "℃" +
-                    "\nКоличество заболевших в стране " + "NONE" + " за сегодня " + "NONE" + " человек" +
-                    "\nВалюта: " + "NONE", chat_id);
+                    "\nКоличество заболевших в стране " + country + " за сегодня равно " + Covid.getConfirmedByCountry(country) + " человек",chat_id);
         }
         if (message != null) {
 
