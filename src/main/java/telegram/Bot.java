@@ -28,14 +28,18 @@ public class Bot extends TelegramLongPollingBot {
         long chat_id = update.getMessage().getChatId();
         String message = update.getMessage().getText();
 
-        if (update.getMessage().getLocation() != null){
+        if (update.getMessage().getLocation() != null) {
             String longitude = update.getMessage().getLocation().getLongitude().toString();
             String latitude = update.getMessage().getLocation().getLatitude().toString();
-            String city = Area.getCity(longitude, latitude);
-            String country = Area.getCountry(city);
+            String city = firstUpperCase(Area.getCity(longitude, latitude));
+            String country = firstUpperCase(Area.getCountry(city));
+            String temp = Weather.getTemperatureCelsium(city);
+            String covid = Covid.getConfirmedByCountry(country);
+            //String currency = Area.getCurrency(country);
             sendMsg("Вы находитесь в городе " + city +
-                    "\nПогода в городе " + city + " равна " + Weather.getTemperatureCelsium(city) + "℃" +
-                    "\nКоличество заболевших в стране " + country + " за сегодня равно " + Covid.getConfirmedByCountry(country) + " человек",chat_id);
+                    "\nПогода в городе " + city + " равна " + temp + "℃" +
+                    "\nКоличество заболевших в стране " + country + " за сегодня равно " + covid + " человек" +
+                    "\nВалюта " + "currency", chat_id);
         }
 
         if (message != null) {
@@ -53,8 +57,8 @@ public class Bot extends TelegramLongPollingBot {
                 } else {
                     sendMsg(
                             "К сожалению мы не смогли найти город " + city +
-                            "\nВведите команду ещё раз" +
-                            "\nПример: /weather Minsk"
+                                    "\nВведите команду ещё раз" +
+                                    "\nПример: /weather Minsk"
                             , chat_id);
                 }
                 city = "";
@@ -107,11 +111,11 @@ public class Bot extends TelegramLongPollingBot {
             if (message.equals("/start")) {
                 sendMsg(
                         "Здравствуйте, " + update.getMessage().getFrom().getFirstName() +
-                        "\nВот команды, которые я могу для вас выполнить:" +
-                        "\n/set" +
-                        "\n/weather + город" +
-                        "\n/covid + страна" +
-                        "\n/quiz + страна"
+                                "\nВот команды, которые я могу для вас выполнить:" +
+                                "\n/set" +
+                                "\n/weather + город" +
+                                "\n/covid + страна" +
+                                "\n/quiz + страна"
                         , chat_id);
             }
         }
@@ -146,6 +150,12 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setText(s);
         sendMessage.setReplyMarkup(key);
         execute(sendMessage);
+    }
+
+    @SneakyThrows
+    public String firstUpperCase(String word){
+        if(word == null || word.isEmpty()) return "";//или return word;
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
     @SneakyThrows

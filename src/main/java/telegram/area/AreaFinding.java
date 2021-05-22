@@ -18,12 +18,13 @@ import java.nio.charset.Charset;
 public class AreaFinding {
     ReadProperties prop = new ReadProperties();
 
+
     @SneakyThrows
     public String getCity(String longitude, String latitude) {
         String city = "";
         JSONObject temp = null;
         JSONObject json = readJsonFromUrl("https://api.weatherbit.io/v2.0/current?lat=" + latitude + "&lon=" + longitude + "&key=" + prop.getProp("API.WEATHER.1") + "&include=minutely");
-        city = json.getJSONArray("main").getJSONObject(0).getJSONArray("data").getJSONObject(0).getString("city_name");
+        city = json.getJSONObject("main").getJSONArray("data").getJSONObject(0).getString("city_name");
         return city;
     }
 
@@ -34,14 +35,20 @@ public class AreaFinding {
         //JSONObject json = readJsonFromUrl("https://api.weatherbit.io/v2.0/current?lat=" + latitude + "&lon=" + longitude + "&key=" + prop.getProp("API.WEATHER.1") + "&include=minutely");
         JSONObject json_ISO_code = readJsonFromUrl("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + prop.getProp("API.WEATHER.2"));
         ISO_code = json_ISO_code.getJSONObject("main").getJSONObject("sys").getString("country");
-        System.out.println(ISO_code);
         JSONObject json = readJsonFromUrl("http://api.worldbank.org/v2/country/" + ISO_code + "?format=json");
         country = json.getJSONArray("main").getJSONArray(1).getJSONObject(0).getString("name");
         return country;
     }
 
-    public String getCurrency() {
-        return "";
+    public String getCurrency(String country) {
+        String currency = "";
+        JSONObject json = readJsonFromUrl("https://countriesnow.space/api/v0.1/countries/currency");
+        for (int i = 0; i < json.getJSONObject("main").getJSONArray("data").length(); i++) {
+            if (json.getJSONObject("main").getJSONArray("data").getJSONObject(i).getString("name").toString().equals(country)) {
+                currency = json.getJSONObject("main").getJSONArray("data").getJSONObject(i).getString("currency");
+            }
+        }
+        return currency;
     }
 
     @SneakyThrows
