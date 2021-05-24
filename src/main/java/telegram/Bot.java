@@ -35,11 +35,11 @@ public class Bot extends TelegramLongPollingBot {
             String country = firstUpperCase(Area.getCountry(city));
             String temp = Weather.getTemperatureCelsium(city);
             String covid = Covid.getConfirmedByCountry(country);
-            //String currency = Area.getCurrency(country);
+            String currency = Area.getCurrency(country);
             sendMsg("Вы находитесь в городе " + city +
                     "\nПогода в городе " + city + " равна " + temp + "℃" +
                     "\nКоличество заболевших в стране " + country + " за сегодня равно " + covid + " человек" +
-                    "\nВалюта " + "currency", chat_id);
+                    "\nВалюта " + currency, chat_id);
         }
 
         if (message != null) {
@@ -93,16 +93,22 @@ public class Bot extends TelegramLongPollingBot {
                         country += message.charAt(i);
                     }
                 }
-                if (Covid.getValidateCountry(country) == true) {
-                    sendMsg("Составляем викторину со страной " + country + "...", chat_id);
-                    sendPoll(country, chat_id);
-                } else {
-                    sendMsg(
-                            "К сожалению мы не смогли найти страну " + country +
-                                    "\nВведите команду ещё раз" +
-                                    "\nПример: /quiz Belarus"
-                            , chat_id);
+                if (country.equals(null) || country.equals("")) {
+                    sendMsg("Составляем викторину со случайной страной " + country + "...", chat_id);
+                    sendPoll(Covid.getRandomCountry(), chat_id);
+                } else  {
+                    if (Covid.getValidateCountry(country) == true) {
+                        sendMsg("Составляем викторину со страной " + country + "...", chat_id);
+                        sendPoll(country, chat_id);
+                    } else {
+                        sendMsg(
+                                "К сожалению мы не смогли найти страну " + country +
+                                        "\nВведите команду ещё раз" +
+                                        "\nПример: /quiz Belarus"
+                                , chat_id);
+                    }
                 }
+
             }
             if (message.equals("/set")) {
                 sendMsgWithReply("Отправьте пожалуйста геолокацию", chat_id);

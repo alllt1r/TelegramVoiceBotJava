@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.Random;
 
 public class CoronavirusParsing {
 
@@ -18,11 +19,20 @@ public class CoronavirusParsing {
 
     @SneakyThrows
     public String getConfirmedByCountry(String country) {
-        String confirmedPeoplee = "";
+        String confirmedPeople = "";
         JSONObject json = readJsonFromUrl("https://api.covid19api.com/total/dayone/country/" + country.toLowerCase(Locale.ROOT));
-        confirmedPeoplee = json.getJSONArray("main").getJSONObject(json.getJSONArray("main").length()-1).getInt("Confirmed") -
+        confirmedPeople = json.getJSONArray("main").getJSONObject(json.getJSONArray("main").length()-1).getInt("Confirmed") -
                 json.getJSONArray("main").getJSONObject(json.getJSONArray("main").length()-2).getInt("Confirmed") + "";
-        return confirmedPeoplee + "";
+        return confirmedPeople + "";
+    }
+
+    @SneakyThrows
+    public String getRandomCountry() {
+        String country = "";
+        Random random = new Random();
+        JSONObject json = readJsonFromUrl("https://countriesnow.space/api/v0.1/countries/currency");
+        country = json.getJSONObject("main").getJSONArray("data").getJSONObject(random.nextInt(250)).getString("name").toString();
+        return country + "";
     }
 
     @SneakyThrows
